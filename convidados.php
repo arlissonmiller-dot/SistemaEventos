@@ -7,10 +7,10 @@ $search = trim($_GET['search'] ?? '');
 
 try {
     if ($search !== '') {
-        $stmt = $pdo->prepare("SELECT id, nome_completo, data_confirmacao FROM convidados WHERE nome_completo LIKE :search ORDER BY data_confirmacao DESC");
+        $stmt = $pdo->prepare("SELECT id, nome_completo, presenca, adultos, criancas, email, data_confirmacao FROM convidados WHERE nome_completo LIKE :search ORDER BY data_confirmacao DESC");
         $stmt->execute(['search' => '%' . $search . '%']);
     } else {
-        $stmt = $pdo->query("SELECT id, nome_completo, data_confirmacao FROM convidados ORDER BY data_confirmacao DESC");
+        $stmt = $pdo->query("SELECT id, nome_completo, presenca, adultos, criancas, email, data_confirmacao FROM convidados ORDER BY data_confirmacao DESC");
     }
 
     $convidados = $stmt->fetchAll();
@@ -41,6 +41,10 @@ try {
                 <tr>
                     <th>ID</th>
                     <th>Nome Completo</th>
+                    <th>Presença</th>
+                    <th>Adultos</th>
+                    <th>Crianças</th>
+                    <th>E-mail</th>
                     <th>Data e Hora da Confirmação</th>
                 </tr>
             </thead>
@@ -54,6 +58,10 @@ try {
                             <td><strong>
                                     <?php echo htmlspecialchars($convidado['nome_completo']); ?>
                                 </strong></td>
+                            <td><?php echo htmlspecialchars($convidado['presenca'] ?: '-'); ?></td>
+                            <td><?php echo htmlspecialchars((string) ($convidado['adultos'] ?? '0')); ?></td>
+                            <td><?php echo htmlspecialchars((string) ($convidado['criancas'] ?? '0')); ?></td>
+                            <td><?php echo htmlspecialchars($convidado['email'] ?: '-'); ?></td>
                             <td>
                                 <?php echo date('d/m/Y \à\s H:i', strtotime($convidado['data_confirmacao'])); ?>
                             </td>
@@ -61,7 +69,7 @@ try {
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="3" style="text-align: center; padding: 30px;">
+                        <td colspan="7" style="text-align: center; padding: 30px;">
                             <i class="fas fa-inbox fa-3x" style="color: #ccc; margin-bottom: 10px;"></i><br>
                             Nenhum convidado encontrado.
                         </td>

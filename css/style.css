@@ -54,9 +54,9 @@ header h1 {
 
 .card {
     background: var(--card-bg);
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     border: 1px solid var(--border-color);
 }
 
@@ -67,29 +67,148 @@ header h1 {
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
+/* Custom Image Form Styles */
+.custom-field {
+    font-family: var(--font-family);
+}
+
+.custom-field label {
     font-weight: 600;
-    color: var(--primary-color);
+    color: #4B6077;
+    /* Bluish gray text from image */
+    font-size: 1.05rem;
+    display: inline-block;
+    margin-bottom: 8px;
 }
 
-.form-group input {
+.full-width label {
+    display: block;
+}
+
+.full-width input,
+.full-width textarea {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
+    padding: 14px 16px;
+    border: 1px solid #dcdfe6;
+    border-radius: 6px;
     font-size: 1rem;
+    color: #4a5568;
     transition: all 0.3s ease;
+    background-color: #fff;
 }
 
-.form-group input:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+.full-width input::placeholder {
+    color: #a0aec0;
+    font-weight: 400;
+}
+
+.full-width input:focus {
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
     outline: none;
+}
+
+.help-text {
+    font-size: 0.9rem;
+    color: #8c98a9;
+    margin-bottom: 12px;
+    margin-top: -4px;
+    display: block;
+}
+
+.row-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border: 1px solid #dcdfe6;
+    border-radius: 8px;
+    background-color: #fff;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.row-field label {
+    margin-bottom: 0;
+}
+
+.radio-group {
+    display: flex;
+    gap: 15px;
+}
+
+.radio-box {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dcdfe6;
+    border-radius: 8px;
+    padding: 10px 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 0 !important;
+    background-color: #fff;
+}
+
+.radio-box input[type="radio"] {
+    margin-right: 10px;
+    accent-color: #1a73e8;
+    width: 16px;
+    height: 16px;
+    margin-top: 0;
+}
+
+.radio-box span {
+    color: #4a5568;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.radio-box:hover {
+    border-color: #a0aec0;
+}
+
+.radio-box:has(input:checked) {
+    border-color: #1a73e8;
+    background-color: #f8fbff;
+}
+
+.select-wrapper {
+    position: relative;
+    width: 90px;
+}
+
+.select-wrapper select {
+    appearance: none;
+    width: 100%;
+    padding: 12px 35px 12px 18px;
+    border: 1px solid #dcdfe6;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #4a5568;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.select-wrapper select:focus {
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+}
+
+.select-wrapper::after {
+    content: '\2304';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #8c98a9;
+    font-size: 1.2rem;
 }
 
 .error-msg {

@@ -7,6 +7,43 @@ if (!isset($_SESSION['rsvp_nome'])) {
     exit;
 }
 $nome = $_SESSION['rsvp_nome'];
+
+require_once 'includes/db.php';
+
+// Fetch event info (assuming 1st row contains configurations)
+$stmt = $pdo->query("SELECT * FROM evento_info LIMIT 1");
+$evento_info = $stmt->fetch();
+
+// Format date and time if available
+$data_formatada = "Data a definir";
+$hora_formatada = "Horário a definir";
+if ($evento_info) {
+    if (!empty($evento_info['data_evento'])) {
+        $data_obj = new DateTime($evento_info['data_evento']);
+        $formatter = new IntlDateFormatter('pt_BR', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+        $data_formatada = $formatter->format($data_obj);
+    }
+
+    if (!empty($evento_info['horario_evento'])) {
+        $horario_obj = new DateTime($evento_info['horario_evento']);
+        $hora_formatada = $horario_obj->format('H\hi');
+    }
+
+    $local_nome = $evento_info['local_nome'] ?? 'Local a definir';
+    $local_endereco = $evento_info['local_endereco'] ?? 'Endereço a definir';
+
+    $lat = $evento_info['latitude'] ?? '-23.563099467540203';
+    $lng = $evento_info['longitude'] ?? '-46.656571584346764';
+} else {
+    // Falbacks if empty
+    $data_formatada = "25 de março de 2026";
+    $hora_formatada = "19h30";
+    $local_nome = "Espaço Eventos Jardim";
+    $local_endereco = "Rua Exemplo, 123 – Centro";
+    $lat = "-23.563099467540203";
+    $lng = "-46.656571584346764";
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -29,14 +66,16 @@ $nome = $_SESSION['rsvp_nome'];
         <main class="card">
             <h2>Informações do Evento</h2>
             <ul class="event-details">
-                <li><strong>Data do evento:</strong> 25 de março de 2026</li>
-                <li><strong>Horário:</strong> Início às 19h30</li>
-                <li><strong>Local:</strong> Espaço Eventos Jardim<br><small>Rua Exemplo, 123 – Centro</small></li>
+                <li><strong>Data do evento:</strong> <?php echo htmlspecialchars($data_formatada); ?></li>
+                <li><strong>Horário:</strong> Início às <?php echo htmlspecialchars($hora_formatada); ?></li>
+                <li><strong>Local:</strong>
+                    <?php echo htmlspecialchars($local_nome); ?><br><small><?php echo htmlspecialchars($local_endereco); ?></small>
+                </li>
             </ul>
 
             <div class="map-container">
                 <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.1492723789523!2d-46.656571584346764!3d-23.563099467540203!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%20S%C3%A3o%20Paulo%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1614050000000!5m2!1spt-BR!2sbr"
+                    src="https://maps.google.com/maps?q=<?php echo urlencode($lat); ?>,<?php echo urlencode($lng); ?>&hl=pt&z=15&output=embed"
                     width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </main>
